@@ -85,7 +85,7 @@ def check_webshell(dir):
                 other += 1
 
             if y_pred[0] == 1:
-                print "%s is webshell" % fulpath
+                print "%s may be a webshell file" % fulpath
                 webshell += 1
 
     print "Scan %d files(%d php files, %d asp files, %d jsp files, %d other files),%d files is webshell" % (all, all_php, all_asp, all_jsp, other, webshell)

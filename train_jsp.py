@@ -12,8 +12,8 @@ import pickle
 
 max_features = 50000
 
-webshell_dir = "Data2/WebShell/jsp/"
-normal_dir = "Data2/normal/jsp/"
+webshell_dir = "Data/WebShell/jsp/"
+normal_dir = "Data/normal/jsp/"
 
 white_count = 0
 black_count = 0
@@ -32,7 +32,7 @@ def load_files(dir):
     g = os.walk(dir)
     for path, d, filelist in g:
         for filename in filelist:
-            if filename.endswith('.jsp'):
+            if filename.endswith('.jsp') or filename.endswith('txt'):
                 fulpath = os.path.join(path, filename)
                 print "Load %s" % fulpath
                 t = load_str(fulpath)

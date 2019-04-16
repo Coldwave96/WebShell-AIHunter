@@ -12,8 +12,8 @@ import pickle
 
 max_features = 50000
 
-webshell_dir = "Data2/WebShell/asp/"
-normal_dir = "Data2/normal/asp/"
+webshell_dir = "Data/WebShell/asp/"
+normal_dir = "Data/normal/asp/"
 
 white_count = 0
 black_count = 0

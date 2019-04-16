@@ -12,8 +12,8 @@ import pickle
 
 max_features = 50000
 
-webshell_dir = "Data2/WebShell/php/"
-normal_dir = "Data2/normal/php/"
+webshell_dir = "Data/WebShell/php/"
+normal_dir = "Data/normal/php/"
 
 white_count = 0
 black_count = 0
