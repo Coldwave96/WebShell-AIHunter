@@ -9,6 +9,7 @@
     <a><img src="https://img.shields.io/github/v/release/coldwave96/WebShell-AIHunter"></a>
     <a><img src="https://img.shields.io/github/issues/coldwave96/WebShell-AIHunter"></a>
     <a><img src="https://img.shields.io/badge/Platform-Linux%20%7C%20Windows-orange"></a>
+    <a><img src="https://img.shields.io/github/license/coldwave96/WebShell-AIHunter"></a>
 </p>
 
 <p align="center">
@@ -69,3 +70,13 @@
 * 按照[数据格式](#webshell-aihunter---webhell)部分分别填充黑白样本文件
 
 * 依次执行`python train_php.py`、`python train_asp.py`、`python train_jsp.py`命令即可训练模型
+
+## 下一步计划
+
+* 代码优化 + 算法更新 + 添加更多的Webshell静态检验（动态污点追踪暂时想不了==）
+
+* 更多类型检测 + 自主指定文件夹
+
+* 考虑建立黑样本模型，类似黑名单机制（理论上白样本模型应该更好可是不切实际）
+
+* 另外求更多更好的黑样本 🙏🙏
