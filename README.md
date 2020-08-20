@@ -10,6 +10,9 @@
     <a><img src="https://img.shields.io/github/issues/coldwave96/WebShell-AIHunter"></a>
     <a><img src="https://img.shields.io/badge/Platform-Linux%20%7C%20Windows-orange"></a>
     <a><img src="https://img.shields.io/github/license/coldwave96/WebShell-AIHunter"></a>
+    <a><img src="https://img.shields.io/github/forks/Coldwave96/WebShell-AIHunter"></a>
+    <a><img src="https://img.shields.io/github/stars/Coldwave96/WebShell-AIHunter"></a>
+    <a><img src="https://img.shields.io/github/contributors/Coldwave96/WebShell-AIHunter"></a>
 </p>
 
 <p align="center">
