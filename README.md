@@ -1,18 +1,18 @@
 # WebShell AIHunter - 机器学习算法检测Webhell
 
-<div style="align: center">
-<img src="https://raw.githubusercontent.com/Coldwave96/WebShell-AIHunter/master/logo.png"/>
-</div>
-
 <p align="center">
-  <a><img src="https://img.shields.io/badge/Python-2-blue"></a>
-  <a><img src="https://img.shields.io/github/v/release/coldwave96/WebShell-AIHunter"></a>
-  <a><img src="https://img.shields.io/github/issues/coldwave96/WebShell-AIHunter"></a>
-  <a><img src="https://img.shields.io/badge/Platform-Linux%20%7C%20Windows-orange"></a>
+    <a><img src="https://raw.githubusercontent.com/Coldwave96/WebShell-AIHunter/master/logo.png"/></a>
 </p>
 
 <p align="center">
-  <a href="https://coldwave96.github.io/">Welcome to my personal blog（＾◇＾）</a>
+    <a><img src="https://img.shields.io/badge/Python-2-blue"></a>
+    <a><img src="https://img.shields.io/github/v/release/coldwave96/WebShell-AIHunter"></a>
+    <a><img src="https://img.shields.io/github/issues/coldwave96/WebShell-AIHunter"></a>
+    <a><img src="https://img.shields.io/badge/Platform-Linux%20%7C%20Windows-orange"></a>
+</p>
+
+<p align="center">
+    <a href="https://coldwave96.github.io/">Welcome to my personal blog（＾◇＾）</a>
 </p>
 
 <hr>
