@@ -1,4 +1,9 @@
-# WebShell_Detection_System
+# WebShell AIHunter : 机器学习算法检测Webshell
+
+![](https://raw.githubusercontent.com/Coldwave96/WebShell-AIHunter/master/logo.png)
+
+
+![](https://img.shields.io/github/issues/coldwave96/WebShell-AIHunter)
 
 ### 基于文本的WebShell检测系统
 
