@@ -1,6 +1,4 @@
-import re
 import os
-import numpy as np
 
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.model_selection import train_test_split
@@ -32,7 +30,7 @@ def load_files(dir):
     g = os.walk(dir)
     for path, d, filelist in g:
         for filename in filelist:
-            if filename.endswith('.asp') or filename.endswith('.txt'):
+            if filename.endswith('.asp'):
                 fulpath = os.path.join(path, filename)
                 print "Load %s" % fulpath
                 t = load_str(fulpath)

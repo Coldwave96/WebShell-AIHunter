@@ -1,6 +1,4 @@
 import os
-import re
-import numpy as np
 
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
@@ -57,7 +55,7 @@ def check_webshell(dir):
         for filename in filelist:
             fulpath=os.path.join(path, filename)
             all += 1
-            if filename.endswith('.php'):
+            if filename.endswith('.php') or filename.endswith('.txt'):
                 all_php += 1
                 t = load_str(fulpath)
                 t_list=[]
@@ -65,7 +63,7 @@ def check_webshell(dir):
                 x = CV1.transform(t_list).toarray()
                 x = transformer.fit_transform(x).toarray()
                 y_pred = clf1.predict(x)
-            elif filename.endswith('.asp'):
+            elif filename.endswith('.asp') or filename.endswith('.txt'):
                 all_asp += 1
                 t = load_str(fulpath)
                 t_list=[]
@@ -73,7 +71,7 @@ def check_webshell(dir):
                 x = CV2.transform(t_list).toarray()
                 x = transformer.fit_transform(x).toarray()
                 y_pred = clf2.predict(x)
-            elif filename.endswith('.jsp'):
+            elif filename.endswith('.jsp') or filename.endswith('.txt'):
                 all_jsp += 1
                 t = load_str(fulpath)
                 t_list=[]
