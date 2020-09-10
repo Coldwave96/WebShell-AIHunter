@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-    <a><img src="https://img.shields.io/badge/Python-2-blue"></a>
+    <a><img src="https://img.shields.io/badge/Python-3-blue"></a>
     <a><img src="https://img.shields.io/github/v/release/coldwave96/WebShell-AIHunter"></a>
     <a><img src="https://img.shields.io/github/issues/coldwave96/WebShell-AIHunter"></a>
     <a><img src="https://img.shields.io/badge/Platform-Linux%20%7C%20Windows-orange"></a>
