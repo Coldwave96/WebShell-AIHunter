@@ -112,7 +112,3 @@ def check_webshell(dir):
 if __name__ == '__main__':
 
     check_webshell(check_dir)
-
-
-
-

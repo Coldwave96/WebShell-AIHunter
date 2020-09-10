@@ -114,7 +114,3 @@ if __name__ == '__main__':
     print ("Load %d white files %d black files" % (white_count, black_count))
 
     do_GNB(x, y)
-
-
-
-
