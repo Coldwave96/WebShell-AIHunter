@@ -1,24 +1,42 @@
 import os
-import re
-import numpy as np
 
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 
 import pickle
+import chardet
+import json
+
+import warnings
+warnings.filterwarnings('ignore')
 
 max_features = 50000
 
 check_dir = "Data/check/"
 
+
+def check_style(filepath):
+    with open(filepath, mode='rb') as f:
+        data = f.read()
+        style = chardet.detect(data)['encoding']
+        return style
+
+
 def load_str(filepath):
     t = ""
-    with open(filepath) as f:
-        for line in f:
-            line = line.strip('\r')
-            line = line.strip('\n')
-            t += line
+    try:
+        style = check_style(filepath)
+        with open(filepath, encoding=style) as f:
+            for line in f:
+                line = line.strip('\r')
+                line = line.strip('\n')
+                t += line
+    except UnicodeDecodeError:
+        with open(filepath, mode='rb') as f:
+            t = f.read()
+
     return t
+
 
 def check_webshell(dir):
     all = 0
@@ -55,28 +73,28 @@ def check_webshell(dir):
     g = os.walk(dir)
     for path, d, filelist in g:
         for filename in filelist:
-            fulpath=os.path.join(path, filename)
+            fulpath = os.path.join(path, filename)
             all += 1
-            if filename.endswith('.php'):
+            if filename.endswith('.php') or filename.endswith('.txt'):
                 all_php += 1
                 t = load_str(fulpath)
-                t_list=[]
+                t_list = []
                 t_list.append(t)
                 x = CV1.transform(t_list).toarray()
                 x = transformer.fit_transform(x).toarray()
                 y_pred = clf1.predict(x)
-            elif filename.endswith('.asp'):
+            elif filename.endswith('.asp') or filename.endswith('.txt'):
                 all_asp += 1
                 t = load_str(fulpath)
-                t_list=[]
+                t_list = []
                 t_list.append(t)
                 x = CV2.transform(t_list).toarray()
                 x = transformer.fit_transform(x).toarray()
                 y_pred = clf2.predict(x)
-            elif filename.endswith('.jsp'):
+            elif filename.endswith('.jsp') or filename.endswith('.txt'):
                 all_jsp += 1
                 t = load_str(fulpath)
-                t_list=[]
+                t_list = []
                 t_list.append(t)
                 x = CV3.transform(t_list).toarray()
                 x = transformer.fit_transform(x).toarray()
@@ -85,10 +103,11 @@ def check_webshell(dir):
                 other += 1
 
             if y_pred[0] == 1:
-                print "%s may be a webshell file" % fulpath
                 webshell += 1
 
-    print "Scan %d files(%d php files, %d asp files, %d jsp files, %d other files),%d files is webshell" % (all, all_php, all_asp, all_jsp, other, webshell)
+            print (json.dumps({'filename': filename, 'result': int(y_pred[0])}, sort_keys=True, indent=4, separators=(',', ': ')))
+
+    print ("Scan %d files(%d php files, %d asp files, %d jsp files, %d other files),%d files is webshell" % (all, all_php, all_asp, all_jsp, other, webshell))
 
 if __name__ == '__main__':
 
