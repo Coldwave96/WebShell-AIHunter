@@ -1,4 +1,4 @@
-# WebShell AIHunter - 机器学习算法检测Webhell
+# WebShell AIHunter - 机器学习算法检测Webshell
 
 <p align="center">
     <a><img src="https://raw.githubusercontent.com/Coldwave96/WebShell-AIHunter/master/logo.png"/></a>
